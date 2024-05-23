@@ -31,6 +31,19 @@ public class DistanceResponseDTO {
         this.distance = distance;
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return "DistanceResponseDTO{" +
+                "id=" + id +
+                ", originAddress='" + originAddress + '\'' +
+                ", destinationAddress='" + destinationAddress + '\'' +
+                ", originLatLon='" + originLatLon + '\'' +
+                ", destinationLatLon='" + destinationLatLon + '\'' +
+                ", distance='" + distance + '\'' +
+                ", duration='" + duration + '\'' +
+                '}';
+    }
 }
 
 

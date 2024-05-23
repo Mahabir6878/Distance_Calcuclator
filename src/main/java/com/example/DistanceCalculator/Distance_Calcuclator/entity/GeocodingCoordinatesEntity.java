@@ -27,4 +27,14 @@ public class GeocodingCoordinatesEntity {
     private String longitude;
     @Column(name = "pincode")
     private String pincode;
+
+    @Override
+    public String toString() {
+        return "GeocodingCoordinatesEntity{" +
+                "id=" + id +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", pincode='" + pincode + '\'' +
+                '}';
+    }
 }

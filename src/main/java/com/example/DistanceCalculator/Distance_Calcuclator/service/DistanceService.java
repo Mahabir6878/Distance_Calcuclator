@@ -43,6 +43,7 @@ public class DistanceService {
             if (gce != null) {
                 // If the pincode is found in the database, add it to the list
                 log.info("Fetched from DB");
+                log.info(gce.toString());
                 geocodingCoordinatesEntities.add(gce);
             } else {
                 // If the pincode is not found in the database, add it to the missing list
@@ -72,6 +73,7 @@ public class DistanceService {
                 }
 
                 // Save the new entities to the database
+                log.info(newGeocodingCoordinatesEntities.toString());
                 geoJPARepo.saveAll(newGeocodingCoordinatesEntities);
             } catch (HttpStatusCodeException e) {
                 throw new Exception(e.getMessage());
@@ -83,8 +85,8 @@ public class DistanceService {
 
     private DistanceCoordinates mapToDistanceCoordinates(List<GeocodingCoordinatesEntity> gce) {
         DistanceCoordinates distanceCoordinates = new DistanceCoordinates();
-        distanceCoordinates.setOriginLatLon(gce.get(0).getLatitude() + "," + gce.get(0).getLongitude());
-        distanceCoordinates.setDestinationLatLon(gce.get(1).getLatitude() + "," + gce.get(1).getLongitude());
+        distanceCoordinates.setDestinationLatLon(gce.get(0).getLatitude() + "," + gce.get(0).getLongitude());
+        distanceCoordinates.setOriginLatLon(gce.get(1).getLatitude() + "," + gce.get(1).getLongitude());
         return distanceCoordinates;
     }
 
@@ -104,12 +106,14 @@ public DistanceResponseDTO getDistanceResponse(DistanceDetails distanceDetails) 
 
     if (existingResponse != null) {
         log.info("Fetched Distance Matrix from DB");
+        log.info(existingResponse.toString());
         return existingResponse;
     } else {
         // Fetch from the API
         DistanceResponseDTO newResponse = distanceProvider.getDistance(distanceCoordinates);
 
         // Save the new response to the database
+        log.info(newResponse.toString());
         distanceMatrixResponseRepository.save(newResponse);
 
         return newResponse;
