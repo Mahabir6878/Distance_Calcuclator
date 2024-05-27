@@ -90,34 +90,29 @@ public class DistanceService {
         return distanceCoordinates;
     }
 
-//    public DistanceMatrixResponseEntity getDistanceResponse(final DistanceDetails distanceDetails) throws Exception {
-//        DistanceCoordinates distanceCoordinates = mapToDistanceCoordinates(getPinDetails(distanceDetails));
-//        return distanceProvider.getDistance(distanceCoordinates);
-//    }
-public DistanceResponseDTO getDistanceResponse(DistanceDetails distanceDetails) throws Exception {
-    List<GeocodingCoordinatesEntity> geocodingCoordinatesEntities = getPinDetails(distanceDetails);
-    DistanceCoordinates distanceCoordinates = mapToDistanceCoordinates(geocodingCoordinatesEntities);
+    public DistanceResponseDTO getDistanceResponse(DistanceDetails distanceDetails) throws Exception {
+        List<GeocodingCoordinatesEntity> geocodingCoordinatesEntities = getPinDetails(distanceDetails);
+        DistanceCoordinates distanceCoordinates = mapToDistanceCoordinates(geocodingCoordinatesEntities);
 
-    // Check if the response is already in the database
-    DistanceResponseDTO existingResponse = distanceMatrixResponseRepository.findByOriginLatLonAndDestinationLatLon(
-            distanceCoordinates.getOriginLatLon(),
-            distanceCoordinates.getDestinationLatLon()
-    );
+        // Check if the response is already in the database
+        DistanceResponseDTO existingResponse = distanceMatrixResponseRepository.findByOriginLatLonAndDestinationLatLon(
+                distanceCoordinates.getOriginLatLon(),
+                distanceCoordinates.getDestinationLatLon()
+        );
 
-    if (existingResponse != null) {
-        log.info("Fetched Distance Matrix from DB");
-        log.info(existingResponse.toString());
-        return existingResponse;
-    } else {
-        // Fetch from the API
-        DistanceResponseDTO newResponse = distanceProvider.getDistance(distanceCoordinates);
+        if (existingResponse != null) {
+            log.info("Fetched Distance Matrix from DB");
+            log.info(existingResponse.toString());
+            return existingResponse;
+        } else {
+            // Fetch from the API
+            DistanceResponseDTO newResponse = distanceProvider.getDistance(distanceCoordinates);
 
-        // Save the new response to the database
-        log.info(newResponse.toString());
-        distanceMatrixResponseRepository.save(newResponse);
+            // Save the new response to the database
+            log.info(newResponse.toString());
+            distanceMatrixResponseRepository.save(newResponse);
 
-        return newResponse;
+            return newResponse;
+        }
     }
-}
-
 }
